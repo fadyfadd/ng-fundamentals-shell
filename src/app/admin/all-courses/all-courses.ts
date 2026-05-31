@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ConfigService } from '../../config-service';
 import { APP_BACKEND_SERVER } from '../../config-service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { BehaviorSubject } from 'rxjs';
-import {CourseDto} from "../../dtos/course-dto"
+import { CourseDto } from "../../dtos/course-dto"
 import { CommonModule } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -74,8 +74,21 @@ export class AllCourses implements OnInit, AfterViewInit {
 
 
     let backendAddress = this.configService.get(APP_BACKEND_SERVER);
-    this.http.get<CourseDto[]>(`${backendAddress}api/course/courses`).subscribe((data) => {
-      this.dataSource.data = data;
+    this.http.get<CourseDto[]>(`${backendAddress}api/course/courses`).subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+      },
+      error: (error: HttpErrorResponse) => {
+
+        if ( (error.status === 401 || error.status === 403)) {
+          console.log(error.message)
+          console.error('You are not authorized to view this content', error);
+        }
+        else {
+          console.error('An error occurred while fetching courses', error);
+        }
+
+      }
     });
 
   }

@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { APP_BACKEND_SERVER, ConfigService } from '../config-service';
 import { JwtTokenDto } from '../dtos/jwt-token-dto';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -73,9 +73,16 @@ export class Login implements OnInit {
           }
 
         },
-        error: (error: any) => {
-          console.log("error")
-          this.notification.showError("Login failed. Please check your credentials and try again.");
+        error: (error: HttpErrorResponse) => {
+
+
+          if (error?.error && error.error.serverCode === "4455ebd2") {
+            this.notification.showError("Login failed. Please check your credentials and try again.");
+          }
+          else {
+            this.notification.showError("An unexpected error occurred. Please try again later");
+          }
+
         }
       }
     );
