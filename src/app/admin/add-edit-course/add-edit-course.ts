@@ -20,8 +20,8 @@ export class AddEditCourse {
   }
 
 
- 
-  public constructor(@Inject(MAT_DIALOG_DATA) public data : {id:number} = { id: 0 } ) {
+
+  public constructor(@Inject(MAT_DIALOG_DATA) public data: { id: number } = { id: 0 }) {
     console.log(this.data);
   }
   public dialogRef: MatDialogRef<AddEditCourse> = inject(MatDialogRef<AddEditCourse>);
