@@ -32,15 +32,21 @@ export class AllCourses implements OnInit, AfterViewInit {
 
 
   deleteCourse(id: number) {
-    const snackRef = this.snackBar.open('Delete this course?', 'CONFIRM', {
-      duration: 5000,
-    });
-
     this.notification.confirm("Are you sure you want to delete the selected row").then((value: boolean) => {
       if (value) {
+        let backendAddress = this.configService.get(APP_BACKEND_SERVER);
 
+        this.http.delete(`${backendAddress}api/course/delete/${id}`).subscribe({
+          next: (response) => {
+            this.notification.showSuccess('Course Successfully Deleted');
+            this.fetchCourses();
+          },
+          error: (error: HttpErrorResponse) => {
+            this.notification.showError('Course not Successfully Deleted');
+          }
+        });
       }
-    })
+    });
   }
 
   public editCourse(id: number) {
@@ -101,7 +107,7 @@ export class AllCourses implements OnInit, AfterViewInit {
 
   fetchCourses() {
     let backendAddress = this.configService.get(APP_BACKEND_SERVER);
-    this.http.get<CourseDto[]>(`${backendAddress}api/course/courses`).subscribe({
+    this.http.get<CourseDto[]>(`${backendAddress}api/course/all`).subscribe({
       next: (data) => {
         this.dataSource.data = data;
       },
