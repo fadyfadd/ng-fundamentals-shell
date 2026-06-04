@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEditCourse } from '../add-edit-course/add-edit-course';
 import { Notification } from '../../notification';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OperationStatus } from '../../enums/operation-status';
 
 
 @Component({
@@ -49,7 +50,10 @@ export class AllCourses implements OnInit, AfterViewInit {
     });
 
     ref.afterClosed().subscribe(result => {
-      console.log('Dialog closed with result:', result);
+        let h = result as OperationStatus;
+        if (h != null && h == OperationStatus.Success)
+          this.fetchCourses()
+     
     });
   }
 
@@ -59,11 +63,11 @@ export class AllCourses implements OnInit, AfterViewInit {
   public createNewCourse() {
     var ref = this.dialog.open(AddEditCourse, {
       width: '400px',
-      data: { id: -1 }
+      data: { id: 0 }
     });
 
     ref.afterClosed().subscribe(result => {
-      console.log('Dialog closed with result:', result);
+       
     });
 
   }
@@ -93,8 +97,27 @@ export class AllCourses implements OnInit, AfterViewInit {
 
   public displayedColumns: string[] = ['id', 'title', 'categoryId', 'categoryName', 'actions'];
 
-  ngOnInit(): void {
+  fetchCourses() {
+    let backendAddress = this.configService.get(APP_BACKEND_SERVER);
+    this.http.get<CourseDto[]>(`${backendAddress}api/course/courses`).subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+      },
+      error: (error: HttpErrorResponse) => {
 
+        if ((error.status === 401 || error.status === 403)) {
+          this.notification.showError('You are not authorized to view this content');
+        }
+        else {
+          this.notification.showError('An error occurred while fetching courses');
+        }
+
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.fetchCourses();
     this.dataSource.filterPredicate = (data: CourseDto, filter: string) => {
       const normalized = filter.trim().toLowerCase();
 
@@ -118,23 +141,7 @@ export class AllCourses implements OnInit, AfterViewInit {
       }
     };
 
-
-    let backendAddress = this.configService.get(APP_BACKEND_SERVER);
-    this.http.get<CourseDto[]>(`${backendAddress}api/course/courses`).subscribe({
-      next: (data) => {
-        this.dataSource.data = data;
-      },
-      error: (error: HttpErrorResponse) => {
-
-        if ((error.status === 401 || error.status === 403)) {
-          this.notification.showError('You are not authorized to view this content');
-        }
-        else {
-          this.notification.showError('An error occurred while fetching courses');
-        }
-
-      }
-    });
+  
 
   }
 }

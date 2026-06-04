@@ -1,17 +1,17 @@
 <h2 mat-dialog-title>Add New Course</h2>
 
 <mat-dialog-content class="course-dialog-content">
-    <form class="dialog-form" (submit)="onSubmit($event)">
+    <form [formGroup]="courseForm" class="dialog-form" (submit)="onSubmit($event)">
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Course title</mat-label>
-            <input matInput type="text" placeholder="Enter course title or description...">
+            <input formControlName="title" matInput type="text" placeholder="Enter course title or description...">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Category</mat-label>
-            <mat-select placeholder="Select a category">
-                 <mat-option [value]="-1">None Selected</mat-option>
+            <mat-select placeholder="Select a category" formControlName="categoryid">
+                 <mat-option [value]="''">None Selected</mat-option>
                 @for (cat of categories(); track cat.id) {
                 <mat-option [value]="cat.id">
                     {{ cat.name }}
@@ -23,8 +23,8 @@
         </mat-form-field>
 
         <mat-dialog-actions align="end">
-            <button mat-button mat-dialog-close type="button">Cancel</button>
-            <button mat-raised-button color="primary">
+            <button  mat-button mat-dialog-close type="button">Cancel</button>
+            <button [disabled]="courseForm.invalid" mat-raised-button color="primary">
                 Save Course
             </button>
         </mat-dialog-actions>

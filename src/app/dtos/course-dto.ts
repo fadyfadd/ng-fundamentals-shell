@@ -8,6 +8,6 @@ export interface CourseCategoryDto {
 export interface CourseDto {
     id?: number;
     title?: string;
-    courseCategopryId?: number;
+    courseCategoryId?: number;
     courseCategory?: CourseCategoryDto;
 }
