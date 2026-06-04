@@ -12,6 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEditCourse } from '../add-edit-course/add-edit-course';
+import { DialogRef } from '@angular/cdk/dialog';
 
 
 @Component({
@@ -21,6 +24,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrl: './all-courses.css',
 })
 export class AllCourses implements OnInit, AfterViewInit {
+
+  private dialog = inject(MatDialog);
+
+  public createNewCourse() {
+    var ref = this.dialog.open(AddEditCourse, {
+      width: '400px',
+      data: { id: -1 }
+    });
+
+    ref.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
+
+
+  }
 
 
   applyFilter(event: Event) {
@@ -80,7 +98,7 @@ export class AllCourses implements OnInit, AfterViewInit {
       },
       error: (error: HttpErrorResponse) => {
 
-        if ( (error.status === 401 || error.status === 403)) {
+        if ((error.status === 401 || error.status === 403)) {
           console.log(error.message)
           console.error('You are not authorized to view this content', error);
         }

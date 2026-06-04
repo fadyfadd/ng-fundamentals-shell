@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Add New Course</h2>
+
+<mat-dialog-content class="course-dialog-content">
+    <form class="dialog-form" (submit)="onSubmit($event)">
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Course Description</mat-label>
+            <textarea matInput placeholder="Enter course details and objectives...">
+      </textarea>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Category</mat-label>
+            <mat-select placeholder="Select a category">
+                <mat-option value="programming">Programming</mat-option>
+                <mat-option value="design">Design</mat-option>
+                <mat-option value="marketing">Marketing</mat-option>
+
+            </mat-select>
+
+        </mat-form-field>
+
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close type="button">Cancel</button>
+            <button mat-raised-button color="primary" >
+                Save Course
+            </button>
+        </mat-dialog-actions>
+
+
+    </form>
+</mat-dialog-content>

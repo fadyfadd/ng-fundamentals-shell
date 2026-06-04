@@ -47,7 +47,12 @@
         <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
 
     </table>
-
+    <hr>
+     
+        <div class="button-group">
+            <button  mat-raised-button  color="primary" (click)="createNewCourse()">New Course</button>           
+        </div>
+   
     <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons>
     </mat-paginator>
 
