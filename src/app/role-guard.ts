@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (route.data && route.data['roles']) {
-    console.log(route.data['roles'][0]);
+    
     const requiredRoles = route.data['roles'] as UserRole[];
     const userRole = authentication.getJwtToken()?.role;
 

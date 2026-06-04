@@ -12,8 +12,8 @@ import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../config-service';
 import { APP_BACKEND_SERVER } from '../../config-service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
+ import { HttpErrorResponse } from '@angular/common/http';
+import { Notification } from '../../notification';
 
 
 @Component({
@@ -34,8 +34,8 @@ export class RegisterStudent {
 
   registerForm: FormGroup;
   private configService: any = inject(ConfigService);
-  private snackBar = inject(MatSnackBar);
-  private fb: FormBuilder = inject(FormBuilder);
+   private fb: FormBuilder = inject(FormBuilder);
+  private notification = inject(Notification);
 
   @ViewChild('form') mainForm!: NgForm;
 
@@ -89,34 +89,19 @@ export class RegisterStudent {
   private handleSubmitServerError(error: HttpErrorResponse) {
     var errors = Object.values(error.error.errors) as string[][];
 
-    console.log(errors);
     if (errors.length > 0) {
       const firstFieldErrors = errors[0];
 
       if (Array.isArray(firstFieldErrors) && firstFieldErrors.length > 0) {
         const firstError: string = firstFieldErrors[0];
-
-        this.snackBar.open(firstError, 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+        this.notification.showError(firstError);
       }
       else {
-        this.snackBar.open('Registration Error', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
-
+        this.notification.showError('Registration Error');
       }
     }
     else {
-      this.snackBar.open('Registration Error', 'Close', {
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this.notification.showError('Registration Error');
     }
 
   }
@@ -141,12 +126,8 @@ export class RegisterStudent {
     this.http.post(`${backendAddress}api/User/register/student`, applicationUser).subscribe({
       next: (response) => {
 
-        this.snackBar.open('Profile Registered Successfully', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'left',
-          verticalPosition: 'bottom',
-        });
-
+        this.notification.showSuccess('Profile Registered Successfully');
+ 
         this.mainForm.resetForm();
         this.onReset();
       },

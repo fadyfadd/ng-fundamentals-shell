@@ -8,7 +8,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { APP_BACKEND_SERVER, ConfigService } from '../config-service';
 import { JwtTokenDto } from '../dtos/jwt-token-dto';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserRole } from '../enums/user-role';
 import { Authentication } from '../authentication';
@@ -37,7 +36,6 @@ export class Login implements OnInit {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
   private notification = inject(Notification);
 
   private fb = inject(FormBuilder);

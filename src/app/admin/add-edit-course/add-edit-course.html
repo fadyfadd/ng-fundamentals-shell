@@ -4,18 +4,19 @@
     <form class="dialog-form" (submit)="onSubmit($event)">
 
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Course Description</mat-label>
-            <textarea matInput placeholder="Enter course details and objectives...">
-      </textarea>
-
+            <mat-label>Course title</mat-label>
+            <input matInput type="text" placeholder="Enter course title or description...">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
             <mat-label>Category</mat-label>
             <mat-select placeholder="Select a category">
-                <mat-option value="programming">Programming</mat-option>
-                <mat-option value="design">Design</mat-option>
-                <mat-option value="marketing">Marketing</mat-option>
+                 <mat-option [value]="-1">None Selected</mat-option>
+                @for (cat of categories(); track cat.id) {
+                <mat-option [value]="cat.id">
+                    {{ cat.name }}
+                </mat-option>
+                }
 
             </mat-select>
 
@@ -23,7 +24,7 @@
 
         <mat-dialog-actions align="end">
             <button mat-button mat-dialog-close type="button">Cancel</button>
-            <button mat-raised-button color="primary" >
+            <button mat-raised-button color="primary">
                 Save Course
             </button>
         </mat-dialog-actions>

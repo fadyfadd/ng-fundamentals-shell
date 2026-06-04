@@ -14,7 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditCourse } from '../add-edit-course/add-edit-course';
-import { DialogRef } from '@angular/cdk/dialog';
+import { Notification } from '../../notification';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -25,7 +26,35 @@ import { DialogRef } from '@angular/cdk/dialog';
 })
 export class AllCourses implements OnInit, AfterViewInit {
 
+
+  private snackBar = inject(MatSnackBar);
+
+
+  deleteCourse(id: number) {
+    const snackRef = this.snackBar.open('Delete this course?', 'CONFIRM', {
+      duration: 5000,
+    });
+
+    this.notification.confirm("Are you sure you want to delete the selected row").then((value: boolean) => {
+      if (value) {
+
+      }
+    })
+  }
+
+  public editCourse(id: number) {
+    var ref = this.dialog.open(AddEditCourse, {
+      width: '400px',
+      data: { id: id }
+    });
+
+    ref.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
+  }
+
   private dialog = inject(MatDialog);
+  private notification = inject(Notification)
 
   public createNewCourse() {
     var ref = this.dialog.open(AddEditCourse, {
@@ -36,7 +65,6 @@ export class AllCourses implements OnInit, AfterViewInit {
     ref.afterClosed().subscribe(result => {
       console.log('Dialog closed with result:', result);
     });
-
 
   }
 
@@ -69,7 +97,7 @@ export class AllCourses implements OnInit, AfterViewInit {
 
     this.dataSource.filterPredicate = (data: CourseDto, filter: string) => {
       const normalized = filter.trim().toLowerCase();
-      console.log(data);
+
       return (
         (data.courseCategory?.id?.toString().toLowerCase().includes(normalized) ?? false) ||
         (data.title?.toLowerCase().includes(normalized) ?? false) ||
@@ -99,11 +127,10 @@ export class AllCourses implements OnInit, AfterViewInit {
       error: (error: HttpErrorResponse) => {
 
         if ((error.status === 401 || error.status === 403)) {
-          console.log(error.message)
-          console.error('You are not authorized to view this content', error);
+          this.notification.showError('You are not authorized to view this content');
         }
         else {
-          console.error('An error occurred while fetching courses', error);
+          this.notification.showError('An error occurred while fetching courses');
         }
 
       }
