@@ -50,10 +50,10 @@ export class AllCourses implements OnInit, AfterViewInit {
     });
 
     ref.afterClosed().subscribe(result => {
-        let h = result as OperationStatus;
-        if (h != null && h == OperationStatus.Success)
-          this.fetchCourses()
-     
+      let h = result as OperationStatus;
+      if (h != null && h == OperationStatus.Success)
+        this.fetchCourses()
+
     });
   }
 
@@ -67,7 +67,9 @@ export class AllCourses implements OnInit, AfterViewInit {
     });
 
     ref.afterClosed().subscribe(result => {
-       
+      let h = result as OperationStatus;
+      if (h != null && h == OperationStatus.Success)
+        this.fetchCourses()
     });
 
   }
@@ -141,7 +143,7 @@ export class AllCourses implements OnInit, AfterViewInit {
       }
     };
 
-  
+
 
   }
 }

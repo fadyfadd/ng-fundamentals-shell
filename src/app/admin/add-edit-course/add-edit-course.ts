@@ -24,24 +24,32 @@ export class AddEditCourse {
 
   onSubmit(event: Event) {
     event.preventDefault();
+    let backendAddress = this.configService.get(APP_BACKEND_SERVER);
 
+    var course: CourseDto = {
+      id: this.courseForm.get("id")?.value,
+      title: this.courseForm.get("title")?.value,
+      courseCategoryId: this.courseForm.get("categoryid")?.value
+    };
 
     if (this.courseForm.get("id")?.value > 0) {
 
-      let backendAddress = this.configService.get(APP_BACKEND_SERVER);
-     
-      var course: CourseDto = {
-        id: this.courseForm.get("id")?.value,
-        title: this.courseForm.get("title")?.value,
-        courseCategoryId: this.courseForm.get("categoryid")?.value
-      };
-
       this.http.put(`${backendAddress}api/course/update`, course).subscribe({
+        next: (response) => {
+          this.notification.showSuccess('Course Successfully Update');
+        },
+        error: (error: HttpErrorResponse) => {
+          this.notification.showError('Course not Successfully Updated');
+        },
+      });
+    }
+    else {
+      this.http.post(`${backendAddress}api/course/add`, course).subscribe({
         next: (response) => {
           this.notification.showSuccess('Course Successfully Added');
         },
         error: (error: HttpErrorResponse) => {
-          this.notification.showSuccess('Course not Successfully Added');
+          this.notification.showError('Course not Successfully Added');
         },
       });
     }
@@ -87,7 +95,7 @@ export class AddEditCourse {
     if (this.data.id && this.data.id > 0) {
       this.http.get<CourseDto>(`${backendAddress}api/course/${this.data.id}`).subscribe({
         next: (data) => {
-        
+
           this.courseForm.get("title")?.setValue(data.title);
           this.courseForm.get("categoryid")?.setValue(data.courseCategoryId);
           this.courseForm.get("id")?.setValue(data.id);
