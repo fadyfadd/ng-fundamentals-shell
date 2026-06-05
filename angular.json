@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "training-center-ng-client": {
+    "ng-fundamentals-shell": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "training-center-ng-client:build:production"
+              "buildTarget": "ng-fundamentals-shell:build:production"
             },
             "development": {
-              "buildTarget": "training-center-ng-client:build:development"
+              "buildTarget": "ng-fundamentals-shell:build:development"
             }
           },
           "defaultConfiguration": "development"
