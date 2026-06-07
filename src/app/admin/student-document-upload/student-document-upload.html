@@ -1,3 +1,20 @@
-<p>student-document-upload works!</p>
+<p>Student Upload</p>
+<form [formGroup]="formGroup">
+    <mat-form-field appearance="outline">
+        <mat-label>Select Student</mat-label>
+        <mat-select formControlName="studentId">
+            <mat-option [value]="''">
+                Select a Student
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+
+<!-- @if (selectedStudentId()) {
+  <app-student-document-management [studentId]="selectedStudentId()" />
+} -->
+
+
 
 <app-student-document-management></app-student-document-management>
