@@ -37,6 +37,7 @@ export class AddEditCourse {
       this.http.put(`${backendAddress}api/course/update`, course).subscribe({
         next: (response) => {
           this.notification.showSuccess('Course Successfully Update');
+          this.dialogRef.close(OperationStatus.Success);
         },
         error: (error: HttpErrorResponse) => {
           this.notification.showError('Course not Successfully Updated');
@@ -47,6 +48,7 @@ export class AddEditCourse {
       this.http.post(`${backendAddress}api/course/add`, course).subscribe({
         next: (response) => {
           this.notification.showSuccess('Course Successfully Added');
+          this.dialogRef.close(OperationStatus.Success);
         },
         error: (error: HttpErrorResponse) => {
           this.notification.showError('Course not Successfully Added');
@@ -54,7 +56,7 @@ export class AddEditCourse {
       });
     }
 
-    this.dialogRef.close(OperationStatus.Success);
+    
   }
 
 

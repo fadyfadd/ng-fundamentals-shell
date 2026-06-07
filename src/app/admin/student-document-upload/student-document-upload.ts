@@ -26,8 +26,7 @@ export class StudentDocumentUpload {
     
     this.http.get<StudentDocumentDto[]>(`${backendAddress}api/student/getAllDocumentsForStudent/${id}`).subscribe({
       next: (data) => {
-        this.documents.set(data);
-        console.log(data);
+        this.documents.set(data);        
       },
       error: (error: HttpErrorResponse) => {
 
