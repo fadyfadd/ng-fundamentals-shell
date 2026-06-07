@@ -11,8 +11,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(MatSnackBarModule),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideHttpClient(      withInterceptors([tokenInjectorInterceptor])
-),
+    provideRouter(routes), provideHttpClient(withInterceptors([tokenInjectorInterceptor])
+    ),
     provideAppInitializer(() => {
       const configService = inject(ConfigService);
       return configService.loadConfig()
