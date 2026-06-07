@@ -2,19 +2,21 @@
 <form [formGroup]="formGroup">
     <mat-form-field appearance="outline">
         <mat-label>Select Student</mat-label>
-        <mat-select formControlName="studentId">
+        <mat-select formControlName="studentId" (selectionChange)="studentSelected($event)">
             <mat-option [value]="''">
                 Select a Student
             </mat-option>
+            @for (item of students(); track $index) {
+            <mat-option [value]="item.id">
+                {{ item.lastName }}, {{ item.firstName }}
+            </mat-option>
+            }
+
         </mat-select>
     </mat-form-field>
+
+    @if (documentCount() > 0) {
+        <hr>
+    }
+    
 </form>
-
-
-<!-- @if (selectedStudentId()) {
-  <app-student-document-management [studentId]="selectedStudentId()" />
-} -->
-
-
-
-<app-student-document-management></app-student-document-management>
