@@ -3,10 +3,10 @@ import { inject } from '@angular/core';
 import { Authentication } from './authentication'
 
 export const tokenInjectorInterceptor: HttpInterceptorFn = (req, next) => {
-   const authService = inject(Authentication);
+  const authService = inject(Authentication);
   const token = authService.getJwtToken()?.token;
 
-   if (token) {
+  if (token) {
     const clonedReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -14,7 +14,7 @@ export const tokenInjectorInterceptor: HttpInterceptorFn = (req, next) => {
     });
     return next(clonedReq);
   }
-   return next(req);
+  return next(req);
 };
 
- 
+
