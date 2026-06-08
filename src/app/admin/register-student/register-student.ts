@@ -78,12 +78,14 @@ export class RegisterStudent {
   }
 
   onReset() {
+
+    this.mainForm.resetForm();
     const d = new Date();
     var currentDate = this.getLocalDateTimeString();
-    this.registerForm.markAsPristine();
-    this.registerForm.markAsUntouched();
-    this.registerForm.reset();
-    this.registerForm.reset({ enrollmentDate: currentDate });
+    //this.registerForm.markAsPristine();
+    //this.registerForm.markAsUntouched();
+    //this.registerForm.reset();
+    this.mainForm.resetForm ({ enrollmentDate: currentDate });
   }
 
   private handleSubmitServerError(error: HttpErrorResponse) {
@@ -126,10 +128,10 @@ export class RegisterStudent {
     this.http.post(`${backendAddress}api/User/register/student`, applicationUser).subscribe({
       next: (response) => {
 
-        this.notification.showSuccess('Profile Registered Successfully');
- 
-        this.mainForm.resetForm();
-        this.onReset();
+        this.notification.showSuccess('Profile  Successfully Registered');
+        this.onReset(); 
+        //this.mainForm.resetForm();
+        //this.onReset();
       },
       error: (error: HttpErrorResponse) => {
         this.handleSubmitServerError(error);

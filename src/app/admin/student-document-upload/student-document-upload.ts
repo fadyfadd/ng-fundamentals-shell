@@ -46,6 +46,9 @@ export class StudentDocumentUpload {
     this.http.post(`${backendAddress}api/student/addDocument`, formData).subscribe({
       next: (response) => {
         this.notification.showSuccess('Document Successfully Uploaded');
+        //this.uploadForm.reset({})
+        
+        
         this.mainForm.resetForm({
 
         });
