@@ -30,7 +30,7 @@ export class StudentDocumentUpload {
     }
     else {
       this.uploadForm.get('name')?.setValue('');
-        this.uploadForm.get("file")?.setValue(null)
+      this.uploadForm.get("file")?.setValue(null)
     }
 
   }
@@ -47,9 +47,9 @@ export class StudentDocumentUpload {
       next: (response) => {
         this.notification.showSuccess('Document Successfully Uploaded');
         //this.uploadForm.reset()
-        
-        
-        this.mainForm.resetForm( );
+
+
+        this.mainForm.resetForm();
         this.fetchDocumentsForStudent(this.formGroup.get('studentId')?.value);
       },
       error: (error: HttpErrorResponse) => {
@@ -75,8 +75,33 @@ export class StudentDocumentUpload {
   documents: WritableSignal<StudentDocumentDto[]> = signal([]);
   documentCount = computed(() => this.documents().length);
 
-  deleteDocument(arg0: number | undefined) {
-    throw new Error('Method not implemented.');
+  deleteDocument(id: number | undefined) {
+
+
+    this.notification.confirm('Are you sure you want to delete this document?', 'DELETE', 7000).then((confirmed) => {
+
+      if (confirmed) {
+        let backendAddress = this.configService.get(APP_BACKEND_SERVER);
+
+        this.http.delete<StudentDocumentDto[]>(`${backendAddress}api/student/deleteDocument/${id}`).subscribe({
+          next: (data) => {
+            this.fetchDocumentsForStudent(this.formGroup.get('studentId')?.value);
+          },
+          error: (error: HttpErrorResponse) => {
+
+            if ((error.status === 401 || error.status === 403)) {
+              this.notification.showError('You are not authorized to perform this action');
+            }
+            else {
+              this.notification.showError('An error occurred while fetching student documents');
+            }
+
+          }
+        });
+      }
+
+    });
+
   }
 
   downloadDocument(id: number | undefined) {
