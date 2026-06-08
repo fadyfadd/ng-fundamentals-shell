@@ -10,30 +10,66 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-student-document-upload',
-  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule , MatButtonModule],
+  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule, MatButtonModule],
   templateUrl: './student-document-upload.html',
   styleUrl: './student-document-upload.css',
 })
 export class StudentDocumentUpload {
-deleteDocument(arg0: number|undefined) {
-throw new Error('Method not implemented.');
-}
-downloadDocument(arg0: number|undefined) {
-throw new Error('Method not implemented.');
-}
+  deleteDocument(arg0: number | undefined) {
+    throw new Error('Method not implemented.');
+  }
+
+  downloadDocument(id: number | undefined) {
+    let backendAddress = this.configService.get(APP_BACKEND_SERVER);
+    this.http.get(`${backendAddress}api/student/downloadDocument/${id}`, { responseType: 'blob', observe: 'response' }).subscribe({
+      next: (response) => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(response.body!);
+        a.href = objectUrl;
+
+        var filename = 'document';
+        const contentDisposition = response.headers.get('content-disposition');
+
+        if (contentDisposition) {
+          const parts = contentDisposition.split('filename=');
+          if (parts.length > 1) {
+            filename = parts[1].split(';')[0].trim();
+          }
+        }
+        console.log("1. Full Header Keys:", response.headers.keys());
+        console.log("2. Raw Content-Disposition:", response.headers.get('content-disposition'));
+        a.download = filename;
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(objectUrl);
+        }, 250);
+
+      },
+      error: (error: HttpErrorResponse) => {
+
+        if ((error.status === 401 || error.status === 403)) {
+          this.notification.showError('You are not authorized to perform this action');
+        }
+        else {
+          this.notification.showError('An error occurred while downloading the document');
+        }
+
+      }
+    });
+  }
 
   studentSelected(event: MatSelectChange) {
-    var id = event.value; 
+    var id = event.value;
     let backendAddress = this.configService.get(APP_BACKEND_SERVER);
 
     if (!id) {
       this.documents.set([]);
       return;
     }
-    
+
     this.http.get<StudentDocumentDto[]>(`${backendAddress}api/student/getAllDocumentsForStudent/${id}`).subscribe({
       next: (data) => {
-        this.documents.set(data);        
+        this.documents.set(data);
       },
       error: (error: HttpErrorResponse) => {
 
@@ -45,7 +81,7 @@ throw new Error('Method not implemented.');
         }
 
       }
-    }); 
+    });
   }
 
   public formGroup: FormGroup;
@@ -55,7 +91,7 @@ throw new Error('Method not implemented.');
   notification = inject(Notification);
   configService = inject(ConfigService);
   students: WritableSignal<StudentDto[]> = signal([]);
-  documents:WritableSignal<StudentDocumentDto[]> = signal([]);
+  documents: WritableSignal<StudentDocumentDto[]> = signal([]);
   documentCount = computed(() => this.documents().length);
 
 
