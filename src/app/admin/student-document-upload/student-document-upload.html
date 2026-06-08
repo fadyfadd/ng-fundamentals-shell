@@ -16,7 +16,38 @@
     </mat-form-field>
 
     @if (documentCount() > 0) {
-        <hr>
+    <hr>
+    <table>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Document Name
+            </th>
+            <th class="center">
+                Actions
+            </th>
+        </tr>
+        <tr>
+            @for (item of documents(); track $index) {
+            <td>
+                {{item.id}}   
+            </td>
+            <td>
+                {{item.documentName}}
+            </td>
+            <td class="center">
+                <button mat-raised-button color="primary" (click)="downloadDocument(item.id)">
+                    Download
+                </button>
+                <button mat-raised-button color="warn" (click)="deleteDocument(item.id)">
+                    Delete
+                </button>
+            </td>
+            }
+        </tr>
+    </table>
     }
-    
+
 </form>

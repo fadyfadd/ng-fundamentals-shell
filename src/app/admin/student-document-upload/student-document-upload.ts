@@ -6,14 +6,21 @@ import { APP_BACKEND_SERVER, ConfigService } from '../../config-service';
 import { Notification } from '../../notification';
 import { StudentDto } from '../../dtos/student-dto';
 import { StudentDocumentDto } from '../../dtos/student-document-dto';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-student-document-upload',
-  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule],
+  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule , MatButtonModule],
   templateUrl: './student-document-upload.html',
   styleUrl: './student-document-upload.css',
 })
 export class StudentDocumentUpload {
+deleteDocument(arg0: number|undefined) {
+throw new Error('Method not implemented.');
+}
+downloadDocument(arg0: number|undefined) {
+throw new Error('Method not implemented.');
+}
 
   studentSelected(event: MatSelectChange) {
     var id = event.value; 
