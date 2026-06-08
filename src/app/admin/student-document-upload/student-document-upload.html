@@ -53,6 +53,7 @@
 
 }
 
+@if (this.formGroup.get('studentId')?.value) {
 <hr>
 <form [formGroup]="uploadForm" #form="ngForm" (ngSubmit)="onSubmit()">
 
@@ -72,12 +73,11 @@
 
     </mat-form-field>
 
-    @if (uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched) {
-
-    }
 
     <button type="submit" mat-button [disabled]="uploadForm.invalid">
         Upload
     </button>
 
 </form>
+
+}
