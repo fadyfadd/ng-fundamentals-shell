@@ -1,5 +1,5 @@
 import { Component, Inject, signal, WritableSignal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { inject } from "@angular/core";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,7 @@ import { OperationStatus } from '../../enums/operation-status';
 
 @Component({
   selector: 'app-add-edit-course',
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelect, MatOption, ReactiveFormsModule],
+  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelect, MatOption, ReactiveFormsModule , MatDialogClose],
   templateUrl: './add-edit-course.html',
   styleUrl: './add-edit-course.css',
 })
