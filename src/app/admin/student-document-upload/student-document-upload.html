@@ -14,40 +14,70 @@
 
         </mat-select>
     </mat-form-field>
+</form>
+@if (documentCount() > 0) {
+<hr>
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Document Name
+        </th>
+        <th class="center">
+            Actions
+        </th>
+    </tr>
 
-    @if (documentCount() > 0) {
-    <hr>
-    <table>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Document Name
-            </th>
-            <th class="center">
-                Actions
-            </th>
-        </tr>
-        <tr>
-            @for (item of documents(); track $index) {
-            <td>
-                {{item.id}}   
-            </td>
-            <td>
-                {{item.documentName}}
-            </td>
-            <td class="center">
-                <button mat-raised-button color="primary" (click)="downloadDocument(item.id)">
-                    Download
-                </button>
-                <button mat-raised-button color="warn" (click)="deleteDocument(item.id)">
-                    Delete
-                </button>
-            </td>
-            }
-        </tr>
-    </table>
+    @for (item of documents(); track $index) {
+    <tr>
+        <td>
+            {{item.id}}
+        </td>
+        <td>
+            {{item.documentName}}
+        </td>
+        <td class="center">
+            <button mat-raised-button color="primary" (click)="downloadDocument(item.id)">
+                Download
+            </button>
+            <button mat-raised-button color="warn" (click)="deleteDocument(item.id)">
+                Delete
+            </button>
+        </td>
+    </tr>
     }
+
+</table>
+
+}
+
+<hr>
+<form [formGroup]="uploadForm" #form="ngForm" (ngSubmit)="onSubmit()">
+
+    <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" />
+
+
+    <mat-form-field appearance="fill">
+        <mat-label>Choose File</mat-label>
+
+        <input matInput formControlName="name" type="text" readonly (click)="fileInput.click()"
+            placeholder="Upload a spreadsheet" />
+
+        <button type="button" mat-icon-button matSuffix (click)="fileInput.click()">
+            <mat-icon>upload_file</mat-icon>
+        </button>
+        <mat-error>A file selection is required.</mat-error>
+
+    </mat-form-field>
+
+    @if (uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched) {
+
+    }
+
+    <button type="submit" mat-button [disabled]="uploadForm.invalid">
+        Upload
+    </button>
 
 </form>

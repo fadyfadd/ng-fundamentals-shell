@@ -1,20 +1,79 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
-import { MatFormField, MatLabel, MatOption, MatSelect, MatSelectChange } from "@angular/material/select";
+import { Component, computed, inject, signal, ViewChild, WritableSignal } from '@angular/core';
+import { MatFormField, MatLabel, MatOption, MatSelect, MatSelectChange, MatError } from "@angular/material/select";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { APP_BACKEND_SERVER, ConfigService } from '../../config-service';
 import { Notification } from '../../notification';
 import { StudentDto } from '../../dtos/student-dto';
 import { StudentDocumentDto } from '../../dtos/student-document-dto';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from "@angular/material/icon";
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-student-document-upload',
-  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule, MatButtonModule],
+  imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule, MatButtonModule, MatIcon, MatError, MatInputModule, MatError],
   templateUrl: './student-document-upload.html',
   styleUrl: './student-document-upload.css',
 })
 export class StudentDocumentUpload {
+
+  @ViewChild('form') mainForm!: NgForm;
+
+  onFileSelected(event: Event) {
+
+    const element = event.currentTarget as HTMLInputElement;
+
+    if (element.files && element.files[0]) {
+      this.uploadForm.get('name')?.setValue(element.files[0].name);
+      this.uploadForm.get("file")?.setValue(element.files[0])
+    }
+    else {
+      this.uploadForm.get('name')?.setValue('');
+        this.uploadForm.get("file")?.setValue(null)
+    }
+
+  }
+
+  onSubmit() {
+
+    var formData = new FormData();
+    formData.append('StudentId', this.formGroup.get('studentId')?.value);
+    //formData.append('name', this.uploadForm.get('name')?.value);
+    formData.append('File', this.uploadForm.get('file')?.value);
+
+    let backendAddress = this.configService.get(APP_BACKEND_SERVER);
+    this.http.post(`${backendAddress}api/student/addDocument`, formData).subscribe({
+      next: (response) => {
+        this.notification.showSuccess('Document Successfully Uploaded');
+        this.mainForm.resetForm({
+
+        });
+        this.fetchDocumentsForStudent(this.formGroup.get('studentId')?.value);
+      },
+      error: (error: HttpErrorResponse) => {
+
+        if ((error.status === 401 || error.status === 403)) {
+          this.notification.showError('You are not authorized to perform this action');
+        }
+        else {
+          this.notification.showError('An error occurred while uploading the document');
+        }
+
+      }
+    });
+  }
+
+  public uploadForm: FormGroup<any>;
+  public formGroup: FormGroup;
+  private http: HttpClient = inject(HttpClient);
+  private formBuilder = inject(FormBuilder);
+  notification = inject(Notification);
+  configService = inject(ConfigService);
+  students: WritableSignal<StudentDto[]> = signal([]);
+  documents: WritableSignal<StudentDocumentDto[]> = signal([]);
+  documentCount = computed(() => this.documents().length);
+
   deleteDocument(arg0: number | undefined) {
     throw new Error('Method not implemented.');
   }
@@ -91,20 +150,16 @@ export class StudentDocumentUpload {
     this.fetchDocumentsForStudent(id);
   }
 
-  public formGroup: FormGroup;
-
-  private http: HttpClient = inject(HttpClient);
-  private formBuilder = inject(FormBuilder);
-  notification = inject(Notification);
-  configService = inject(ConfigService);
-  students: WritableSignal<StudentDto[]> = signal([]);
-  documents: WritableSignal<StudentDocumentDto[]> = signal([]);
-  documentCount = computed(() => this.documents().length);
-
 
   constructor() {
     this.formGroup = this.formBuilder.group({
       studentId: ['']
+    });
+
+    this.uploadForm = this.formBuilder.group({
+      studentId: [''],
+      file: [null, [Validators.required]],
+      name: ['', [Validators.required]]
     });
 
 
