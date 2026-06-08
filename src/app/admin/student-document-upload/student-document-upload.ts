@@ -58,16 +58,11 @@ export class StudentDocumentUpload {
     });
   }
 
-  studentSelected(event: MatSelectChange) {
-    var id = event.value;
+  fetchDocumentsForStudent(studentId: number | undefined) {
+
     let backendAddress = this.configService.get(APP_BACKEND_SERVER);
 
-    if (!id) {
-      this.documents.set([]);
-      return;
-    }
-
-    this.http.get<StudentDocumentDto[]>(`${backendAddress}api/student/getAllDocumentsForStudent/${id}`).subscribe({
+    this.http.get<StudentDocumentDto[]>(`${backendAddress}api/student/getAllDocumentsForStudent/${studentId}`).subscribe({
       next: (data) => {
         this.documents.set(data);
       },
@@ -82,6 +77,18 @@ export class StudentDocumentUpload {
 
       }
     });
+
+  }
+
+  studentSelected(event: MatSelectChange) {
+    var id = event.value;
+
+    if (!id) {
+      this.documents.set([]);
+      return;
+    }
+
+    this.fetchDocumentsForStudent(id);
   }
 
   public formGroup: FormGroup;
