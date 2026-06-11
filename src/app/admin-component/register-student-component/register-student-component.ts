@@ -12,8 +12,8 @@ import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../config-service';
 import { APP_BACKEND_SERVER } from '../../config-service';
- import { HttpErrorResponse } from '@angular/common/http';
-import { Notification } from '../../notification';
+import { HttpErrorResponse } from '@angular/common/http';
+import {  NotificationService } from '../../notification-service';
 
 
 @Component({
@@ -27,15 +27,15 @@ import { Notification } from '../../notification';
     ReactiveFormsModule,
     CommonModule,
   ],
-  templateUrl: './register-student.html',
-  styleUrl: './register-student.css',
+  templateUrl: './register-student-component.html',
+  styleUrl: './register-student-component.css',
 })
-export class RegisterStudent {
+export class RegisterStudentComponent {
 
   registerForm: FormGroup;
   private configService: any = inject(ConfigService);
-   private fb: FormBuilder = inject(FormBuilder);
-  private notification = inject(Notification);
+  private fb: FormBuilder = inject(FormBuilder);
+  private notification = inject(NotificationService);
 
   @ViewChild('form') mainForm!: NgForm;
 
@@ -85,7 +85,7 @@ export class RegisterStudent {
     //this.registerForm.markAsPristine();
     //this.registerForm.markAsUntouched();
     //this.registerForm.reset();
-    this.mainForm.resetForm ({ enrollmentDate: currentDate });
+    this.mainForm.resetForm({ enrollmentDate: currentDate });
   }
 
   private handleSubmitServerError(error: HttpErrorResponse) {
@@ -129,7 +129,7 @@ export class RegisterStudent {
       next: (response) => {
 
         this.notification.showSuccess('Profile  Successfully Registered');
-        this.onReset(); 
+        this.onReset();
         //this.mainForm.resetForm();
         //this.onReset();
       },

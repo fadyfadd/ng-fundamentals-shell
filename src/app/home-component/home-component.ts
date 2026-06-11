@@ -1,22 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
-import { Authentication } from '../authentication'
+import { AuthenticationService } from '../authentication-service'
 import { NgStyle } from "../../../node_modules/@angular/common/types/_common_module-chunk";
 import { UserRole } from '../enums/user-role';
 
 @Component({
   selector: 'app-home',
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './home-component.html',
+  styleUrls: ['./home-component.css'],
 })
-export class Home {
+export class HomeComponent {
 
   public admin = UserRole.Administrator;
   public student = UserRole.Student;
 
   private router = inject(Router);
-  private authentication = inject(Authentication);
+  private authentication = inject(AuthenticationService);
 
   public isLogoutVisible(): boolean {
     return this.authentication.getIsAuthenticated();

@@ -3,7 +3,7 @@ import { MatFormField, MatLabel, MatOption, MatSelect, MatSelectChange, MatError
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { APP_BACKEND_SERVER, ConfigService } from '../../config-service';
-import { Notification } from '../../notification';
+import { NotificationService } from '../../notification-service';
 import { StudentDto } from '../../dtos/student-dto';
 import { StudentDocumentDto } from '../../dtos/student-document-dto';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +13,10 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-student-document-upload',
   imports: [MatFormField, MatLabel, MatOption, MatSelect, ReactiveFormsModule, MatButtonModule, MatIcon, MatError, MatInputModule, MatError],
-  templateUrl: './student-document-upload.html',
-  styleUrl: './student-document-upload.css',
+  templateUrl: './student-document-upload-component.html',
+  styleUrl: './student-document-upload-component.css',
 })
-export class StudentDocumentUpload {
+export class StudentDocumentUploadComponent {
 
   @ViewChild('form') mainForm!: NgForm;
 
@@ -69,8 +69,8 @@ export class StudentDocumentUpload {
   public formGroup: FormGroup;
   private http: HttpClient = inject(HttpClient);
   private formBuilder = inject(FormBuilder);
-  notification = inject(Notification);
-  configService = inject(ConfigService);
+  private notification = inject(NotificationService);
+  private configService = inject(ConfigService);
   students: WritableSignal<StudentDto[]> = signal([]);
   documents: WritableSignal<StudentDocumentDto[]> = signal([]);
   documentCount = computed(() => this.documents().length);

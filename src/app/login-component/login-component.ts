@@ -10,8 +10,8 @@ import { JwtTokenDto } from '../dtos/jwt-token-dto';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserRole } from '../enums/user-role';
-import { Authentication } from '../authentication';
-import { Notification } from '../notification';
+import { AuthenticationService } from '../authentication-service';
+import { NotificationService } from '../notification-service';
 
 @Component({
   selector: 'app-login',
@@ -20,10 +20,10 @@ import { Notification } from '../notification';
     MatInputModule,
     MatButtonModule,
     MatIconModule, ReactiveFormsModule, RouterLink, RouterLinkActive],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './login-component.html',
+  styleUrls: ['./login-component.css'],
 })
-export class Login implements OnInit {
+export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authentication.clearAuthentication();
@@ -36,7 +36,7 @@ export class Login implements OnInit {
 
   private http = inject(HttpClient);
   private router = inject(Router);
-  private notification = inject(Notification);
+  private notification = inject(NotificationService);
 
   private fb = inject(FormBuilder);
 
@@ -47,7 +47,7 @@ export class Login implements OnInit {
 
 
   private configService: any = inject(ConfigService);
-  private authentication: any = inject(Authentication);
+  private authentication: any = inject(AuthenticationService);
 
   public onSubmit() {
     if (this.loginForm.invalid)

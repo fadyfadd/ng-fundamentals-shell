@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
-import { AddEditCourse } from '../add-edit-course/add-edit-course';
-import { Notification } from '../../notification';
+import { AddEditCourseComponent } from '../add-edit-course-component/add-edit-course-component';
+import { NotificationService } from '../../notification-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationStatus } from '../../enums/operation-status';
 
@@ -22,10 +22,10 @@ import { OperationStatus } from '../../enums/operation-status';
 @Component({
   selector: 'app-all-courses',
   imports: [MatTableModule, CommonModule, MatSortModule, MatPaginator, MatButtonModule, MatIconModule, MatInputModule, MatFormFieldModule],
-  templateUrl: './all-courses.html',
-  styleUrl: './all-courses.css',
+  templateUrl: './all-courses-component.html',
+  styleUrl: './all-courses-component.css',
 })
-export class AllCourses implements OnInit, AfterViewInit {
+export class AllCoursesComponent implements OnInit, AfterViewInit {
 
 
   private snackBar = inject(MatSnackBar);
@@ -50,7 +50,7 @@ export class AllCourses implements OnInit, AfterViewInit {
   }
 
   public editCourse(id: number) {
-    var ref = this.dialog.open(AddEditCourse, {
+    var ref = this.dialog.open(AddEditCourseComponent, {
       width: '400px',
       data: { id: id }
     });
@@ -64,10 +64,10 @@ export class AllCourses implements OnInit, AfterViewInit {
   }
 
   private dialog = inject(MatDialog);
-  private notification = inject(Notification)
+  private notification = inject(NotificationService);
 
   public createNewCourse() {
-    var ref = this.dialog.open(AddEditCourse, {
+    var ref = this.dialog.open(AddEditCourseComponent, {
       width: '400px',
       data: { id: 0 }
     });

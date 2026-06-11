@@ -9,10 +9,10 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-spinner',
   imports: [MatProgressSpinnerModule , AsyncPipe
   ],
-  templateUrl: './spinner.html',
-  styleUrl: './spinner.css',
+  templateUrl: './spinner-component.html',
+  styleUrl: './spinner-component.css',
 })
-export class Spinner {
+export class SpinnerComponent {
 
   SpinnerService = inject(SpinnerService);
 
@@ -21,13 +21,6 @@ export class Spinner {
  
   }
 
-  public show() {
-    this.SpinnerService.activeRequest$.next(this.SpinnerService.activeRequest$.value + 1);
-  }
-
-  public hide() {
-     this.SpinnerService.activeRequest$.next(this.SpinnerService.activeRequest$.value <= 0 ? 0 : this.SpinnerService.activeRequest$.value - 1);  
-   
-  }
+ 
 
 }

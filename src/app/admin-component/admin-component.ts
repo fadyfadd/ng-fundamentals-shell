@@ -4,10 +4,10 @@ import { RouterLink, RouterOutlet, Router, RouterLinkActive } from "@angular/rou
 @Component({
   selector: 'app-admin',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './admin.html',
-  styleUrl: './admin.css',
+  templateUrl: './admin-component.html',
+  styleUrl: './admin-component.css',
 })
-export class Admin {
+export class AdminComponent {
 
   private router = inject(Router);
   logout(event: MouseEvent) {

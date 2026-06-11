@@ -8,7 +8,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { CourseCategoryDto, CourseDto } from '../../dtos/course-dto';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { APP_BACKEND_SERVER, ConfigService } from '../../config-service';
-import { Notification } from '../../notification';
+import { NotificationService } from '../../notification-service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomValidators } from '../../validations/custom-validators';
 import { OperationStatus } from '../../enums/operation-status';
@@ -16,11 +16,11 @@ import { OperationStatus } from '../../enums/operation-status';
 
 @Component({
   selector: 'app-add-edit-course',
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelect, MatOption, ReactiveFormsModule , MatDialogClose],
-  templateUrl: './add-edit-course.html',
-  styleUrl: './add-edit-course.css',
+  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelect, MatOption, ReactiveFormsModule, MatDialogClose],
+  templateUrl: './add-edit-course-component.html',
+  styleUrl: './add-edit-course-component.css',
 })
-export class AddEditCourse {
+export class AddEditCourseComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -56,14 +56,14 @@ export class AddEditCourse {
       });
     }
 
-    
+
   }
 
 
   public categories: WritableSignal<CourseCategoryDto[]> = signal([]);
   private http: HttpClient = inject(HttpClient);
   private configService = inject(ConfigService);
-  private notification = inject(Notification)
+  private notification = inject(NotificationService);
   courseForm!: FormGroup;
 
 
@@ -115,6 +115,6 @@ export class AddEditCourse {
       });
     }
   }
-  public dialogRef: MatDialogRef<AddEditCourse> = inject(MatDialogRef<AddEditCourse>);
+  public dialogRef: MatDialogRef<AddEditCourseComponent> = inject(MatDialogRef<AddEditCourseComponent>);
 
 }

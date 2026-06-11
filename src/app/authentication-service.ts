@@ -4,7 +4,7 @@ import { JwtTokenDto } from './dtos/jwt-token-dto';
 @Injectable({
   providedIn: 'root',
 })
-export class Authentication {
+export class AuthenticationService {
 
   private isAuthenticated: boolean = false;
   private jwtToken: JwtTokenDto | null = null;
