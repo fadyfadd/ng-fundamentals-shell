@@ -1,0 +1,8 @@
+@if(((this.SpinnerService.activeRequest$ | async) ?? 0) > 0) {
+<div class="backdrop">
+    <div class="loader">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+</div>
+}
+
