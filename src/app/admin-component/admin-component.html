@@ -1,10 +1,10 @@
 <div class="navbar-links">
     <a [routerLinkActive]="'active-link'" [routerLink]="['/home']">Main Home</a> |
-    <a [routerLinkActive]="'active-link'" [routerLink]="['/admin/home']">Admin Home</a> |
-    <a [routerLinkActive]="'active-link'" [routerLink]="['/admin/register-student']">Register Student</a> |
-    <a [routerLinkActive]="'active-link'" [routerLink]="['/admin/all-courses']">All Courses</a> |
-    <a [routerLinkActive]="'active-link'" [routerLink]="['/admin/student-document-upload']">Student Document Upload</a>
-    |
+    <a [routerLinkActive]="'active-link'" [routerLink]="['home']">Admin Home</a> |
+    <a [routerLinkActive]="'active-link'" [routerLink]="['register-student']">Register Student</a> |
+    <a [routerLinkActive]="'active-link'" [routerLink]="['all-courses']">All Courses</a> |
+    <a [routerLinkActive]="'active-link'" [routerLink]="['student-document-upload']">Student Document Upload</a> |
+    <a [routerLinkActive]="'active-link'" [routerLink]="['register-teacher']">Register Teacher</a> |
     <a style="cursor: pointer;" role="button" (click)="logout($event)">Logout </a>
 </div>
 
